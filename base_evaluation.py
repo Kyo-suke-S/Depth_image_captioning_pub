@@ -20,7 +20,7 @@ import Captioning_models.util as util
 
 from Captioning_models.Base_caption_model.nic import evaluation_nic
 
-def Soft_evaluation(atten, useData = "coco"):
+def Base_evaluation(atten, useData = "coco"):
     config = ConfigEval()
     word_to_id_pass = config.word_to_id_file #MSCOCOで学習する時に使用
     id_to_word_pass = config.id_to_word_file #MSCOCOで学習する時に使用
@@ -169,7 +169,7 @@ def Soft_evaluation(atten, useData = "coco"):
     return
 
 
-def Soft_sample(atten, sample_pic, useData="coco"):#キャプションとアテンションを可視化
+def Base_sample(atten, sample_pic, useData="coco"):#キャプションとアテンションを可視化
     config = ConfigEval()
 
     word_to_id_pass = config.word_to_id_file #MSCOCOで学習する時に使用
@@ -343,13 +343,16 @@ def main():
     if len(args)==4:
         atten = args[1]
         useData = args[3]
-        Soft_evaluation(atten, useData)
+        Base_evaluation(atten, useData)
     
     elif len(args)==5:
         atten = args[1]
         sample_pic = args[3]
         useData = args[4]
-        Soft_sample(atten, sample_pic, useData)
+        Base_sample(atten, sample_pic, useData)
+
+    elif args[1] == "nic":
+        evaluation_nic()
 
     else:
         print("base_evaluation.py {soft/hard} {score/sample sample_pic} {useData}")
