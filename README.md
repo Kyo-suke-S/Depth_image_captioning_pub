@@ -24,14 +24,14 @@
 | MSCOCO2014の画像例                        | 左画像の奥行きマップ                        |
 
 
-## 実験結果
+## 2. 実験結果
 MSCOCO2014での実験結果(150 epoch)<br>[base-soft, base-hard]は既存モデル(Show, Attend and Tell)、[depth-soft, depth-hard]は提案モデル。ソフトアテンションの提案モデルdepth-softのスコアがMETEORを除いてbase-softより高くなったことがわかる。
 <figure style="text-align: center;">
   <img src="./README_images/exp1_table.png" alt="実験結果" width="600">
   <figcaption>表1: MSCOCO2014 Validationセット4000点に対するスコア</figcaption>
 </figure>
 
-## 使用方法
+## 3. 使用方法
 ### 準備(環境構築)
 ```bash
 # 仮想環境の作成と有効化
@@ -46,7 +46,7 @@ pip install -r requirements.txt
 ### MSCOCO2014のダウンロード
 [MSCOCO2014データセットダウンロードページ](https://cocodataset.org/#download)の「2014 Train images[83k/13GB]」と「2014 Val images[41k/6GB]」、「2014 Train/Val annotations [241MB]」をダウンロード。<br>それぞれのzipファイルを「./dataset/coco2014に」解凍。
 ### ボキャブラリー辞書の作成
-仮想環境に「jupyterをインストールし、「./dataset」にあるノートブックファイルのセルを実行しボキャブラリー辞書を作成<br>
+仮想環境にjupyterをインストールし、「./dataset」にあるノートブックファイルのセルを実行しボキャブラリー辞書を作成<br>
 辞書に含まれる単語はtrainとvalidationデータセットの正解キャプション中で3回以上出現する単語、及び「&lt;start&gt;、&lt;end&gt;、&lt;unk&gt;」。
 
 ### モデルの学習(すべて3回実験される)
@@ -73,8 +73,8 @@ python depth_main.py soft cnn {coco/original}
 python depth_main.py hard cnn {coco/original}
 ```
 ### モデルの評価
-scoreを指定することで、Bleu、METEOR、Rouge、CIDErのスコアを計算
-sampleを指定することで個別の画像に対するキャプションとアテンションを可視化(nic以外)
+scoreを指定することで、Bleu、METEOR、Rouge、CIDErのスコアを計算<br>
+sampleを指定することで個別の画像に対するキャプションとアテンションを可視化(nic以外)<br>
 ・ベースモデル
 ```bash
 #スコア
