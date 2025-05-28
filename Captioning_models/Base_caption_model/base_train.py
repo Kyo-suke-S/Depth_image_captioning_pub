@@ -21,18 +21,27 @@ import Captioning_models.util as util
 tqdm_disable=True
 lam = 0.7  # regularization parameter for 'doubly stochastic attention', as in the paper
 
-def train_base_soft(ext):
+def train_base_soft(ext, useData):
     config = ConfigTrain()
+    word_to_id_pass = config.word_to_id_file #MSCOCOで学習する時に使用
+    train_anno_file_pass = config.train_anno_file #MSCOCOのアノテーションファイル
+    val_anno_file_pass = config.val_anno_file
+    save_directory = config.save_directory_soft
+    if useData == "original":
+        word_to_id_pass = config.ori_word_to_id_file
+        train_anno_file_pass = config.ori_train_anno_file
+        val_anno_file_pass = config.ori_val_anno_file
+        save_directory = config.save_directory_soft_ori
 
     # 辞書（単語→単語ID）の読み込み
-    with open(config.ori_word_to_id_file, 'rb') as f:
+    with open(word_to_id_pass, 'rb') as f:
         word_to_id = pickle.load(f)
 
     # 辞書サイズを保存
     vocab_size = len(word_to_id)
         
     # モデル出力用のディレクトリを作成
-    os.makedirs(config.save_directory_soft_ori, exist_ok=True)
+    os.makedirs(save_directory, exist_ok=True)
 
     # 画像のtransformsを定義
     transforms = T.Compose([
@@ -48,10 +57,10 @@ def train_base_soft(ext):
                                          #annFile=config.anno_file, 
                                          #transform=transforms)
     train_dataset = dataset.CocoCaptions(root=config.train_img_directory, 
-                                         annFile=config.ori_train_anno_file, 
+                                         annFile=train_anno_file_pass, 
                                          transform=transforms)
     val_dataset = dataset.CocoCaptions(root=config.val_img_directory, 
-                                         annFile=config.ori_val_anno_file, 
+                                         annFile=val_anno_file_pass, 
                                          transform=transforms)
     
     # Subset samplerの生成
@@ -110,10 +119,10 @@ def train_base_soft(ext):
                     optimizer, milestones=config.lr_drop, gamma=0.1)
 
     # 学習経過の書き込み
-    train_loss_file = '{}/base_soft_train_loss_ori{}.csv'\
-        .format(config.save_directory_soft_ori, ext)
-    val_loss_file = '{}/base_soft_val_loss_ori{}.csv'\
-        .format(config.save_directory_soft_ori, ext)
+    train_loss_file = '{}/base_soft_train_loss_{}{}.csv'\
+        .format(save_directory, useData, ext)
+    val_loss_file = '{}/base_soft_val_loss_{}{}.csv'\
+        .format(save_directory, useData, ext)
     #now = datetime.datetime.now()
     #train_loss_file = '{}/base_soft_train_loss_{}.csv'\
         #.format(config.save_directory_soft, now.strftime('%Y%m%d_%H%M%S'))
@@ -217,12 +226,12 @@ def train_base_soft(ext):
             # エンコーダモデルを保存
             torch.save(
                 encoder.state_dict(),
-                f'{config.save_directory_soft_ori}/base_soft_encoder_best_ori{ext}.pth')
+                f'{save_directory}/base_soft_encoder_best_{useData}{ext}.pth')
 
             # デコーダモデルを保存
             torch.save(
                 decoder.state_dict(),
-                f'{config.save_directory_soft_ori}/base_soft_decoder_best_ori{ext}.pth')
+                f'{save_directory}/base_soft_decoder_best_{useData}{ext}.pth')
             
 #--------------------------------------------------------------------------------------------------
 #hard attentionの学習
@@ -236,18 +245,28 @@ def temp_anneal(epoch_num):
     temp = torch.from_numpy(temp).clone()
     return temp
 
-def train_base_hard(ext):
+def train_base_hard(ext, useData):
     config = ConfigTrain()
+    word_to_id_pass = config.word_to_id_file #MSCOCOで学習する時に使用
+    train_anno_file_pass = config.train_anno_file #MSCOCOのアノテーションファイル
+    val_anno_file_pass = config.val_anno_file
+    save_directory = config.save_directory_soft
+    if useData == "original":
+        word_to_id_pass = config.ori_word_to_id_file
+        train_anno_file_pass = config.ori_train_anno_file
+        val_anno_file_pass = config.ori_val_anno_file
+        save_directory = config.save_directory_soft_ori
+
 
     # 辞書（単語→単語ID）の読み込み
-    with open(config.ori_word_to_id_file, 'rb') as f:
+    with open(word_to_id_pass, 'rb') as f:
         word_to_id = pickle.load(f)
 
     # 辞書サイズを保存
     vocab_size = len(word_to_id)
         
     # モデル出力用のディレクトリを作成
-    os.makedirs(config.save_directory_hard_ori, exist_ok=True)
+    os.makedirs(save_directory, exist_ok=True)
 
     # 画像のtransformsを定義
     transforms = T.Compose([
@@ -263,10 +282,10 @@ def train_base_hard(ext):
                                          #annFile=config.anno_file, 
                                          #transform=transforms)
     train_dataset = dataset.CocoCaptions(root=config.train_img_directory, 
-                                         annFile=config.ori_train_anno_file, 
+                                         annFile=train_anno_file_pass, 
                                          transform=transforms)
     val_dataset = dataset.CocoCaptions(root=config.val_img_directory, 
-                                         annFile=config.ori_val_anno_file, 
+                                         annFile=val_anno_file_pass, 
                                          transform=transforms)
     
     # Subset samplerの生成
@@ -326,10 +345,10 @@ def train_base_hard(ext):
                     optimizer, milestones=config.lr_drop, gamma=0.1)
 
     # 学習経過の書き込み
-    train_loss_file = '{}/base_hard_train_loss_ori{}.csv'\
-        .format(config.save_directory_hard_ori, ext)
-    val_loss_file = '{}/base_hard_val_loss_ori{}.csv'\
-        .format(config.save_directory_hard_ori, ext)
+    train_loss_file = '{}/base_hard_train_loss_{}{}.csv'\
+        .format(save_directory, useData, ext)
+    val_loss_file = '{}/base_hard_val_loss_{}{}.csv'\
+        .format(save_directory, useData, ext)
     #now = datetime.datetime.now()
     #train_loss_file = '{}/base_hard_train_loss_{}.csv'\
         #.format(config.save_directory_hard, now.strftime('%Y%m%d_%H%M%S'))
@@ -433,11 +452,11 @@ def train_base_hard(ext):
             # エンコーダモデルを保存
             torch.save(
                 encoder.state_dict(),
-                f'{config.save_directory_hard_ori}/base_hard_encoder_best_ori{ext}.pth')
+                f'{save_directory}/base_hard_encoder_best_{useData}{ext}.pth')
 
             # デコーダモデルを保存
             torch.save(
                 decoder.state_dict(),
-                f'{config.save_directory_hard_ori}/base_hard_decoder_best_ori{ext}.pth')
+                f'{save_directory}/base_hard_decoder_best_{useData}{ext}.pth')
             
     return

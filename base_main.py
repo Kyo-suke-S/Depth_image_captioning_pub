@@ -15,13 +15,27 @@ def torch_seed(seed=123):
 def main():
     torch_seed()
     exp_time = 3
+    datas = ["coco", "original"]
     args = sys.argv
-    if args[1] == "soft":
-        for i in range(exp_time):
-            train_base_soft(i)
+    if len(args)==1:
+        print("input {soft/hard} {coco/original} or only nic")
+        return
+    elif args[1] == "soft":
+        useData = args[2]
+        if useData in datas:
+            for i in range(exp_time):
+                train_base_soft(i, useData)
+        else:
+            print("input coco or original")
+            return
     elif args[1] == "hard":
-        for i in range(exp_time):
-            train_base_hard(i)
+        useData == args[2]
+        if useData in datas:
+            for i in range(exp_time):
+                train_base_hard(i, useData)
+        else:
+            print("input coco or original")
+            return
 
     elif args[1] == "nic":
         for i in range(exp_time):

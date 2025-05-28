@@ -14,20 +14,25 @@ def torch_seed(seed=123):
 def main():
     torch_seed()
     exp_time = 3
+    datas = ["coco", "original"]
     args = sys.argv
-    if args[1] == "soft" and args[2] == "cnn":
-        for i in range(exp_time):
-            train_Cdepth_soft(i)
+    if len(args)==1:
+        print("input {soft/hard} {cnn/mlp} {coco/original}")
+        return
+    elif args[1] == "soft" and args[2] == "cnn":
+        useData = args[3]
+        if useData in datas:
+            for i in range(exp_time, useData):
+                train_Cdepth_soft(i)
     elif args[1] == "soft" and args[2] == "mlp":
-        for i in range(exp_time):
-            train_Mdepth_soft(i)
+        pass
 
     elif args[1] == "hard" and args[2] == "cnn":
-        for i in range(exp_time):
-            train_Cdepth_hard(i)
+        if useData in datas:
+            for i in range(exp_time):
+                train_Cdepth_hard(i, useData)
     elif args[1] == "hard" and args[2] == "mlp":
-        for i in range(exp_time):
-            train_Mdepth_hard(i)
+        pass
 
 
 if __name__ == "__main__":

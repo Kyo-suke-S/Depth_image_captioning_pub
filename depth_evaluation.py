@@ -23,16 +23,16 @@ import gc
 
 import Captioning_models.util as util
 
-def Cdepth_evaluation(atten, useData = "coco"):
+def Cdepth_evaluation(atten, useData):
     config = ConfigEval()
     word_to_id_pass = config.word_to_id_file #MSCOCOで学習する時に使用
     id_to_word_pass = config.id_to_word_file #MSCOCOで学習する時に使用
     anno_file_pass = config.val_anno_file #MSCOCOのアノテーションファイル
     if atten == "soft":
-        save_directly = config.save_directory_Cdep_soft
+        save_directory = config.save_directory_Cdep_soft
         param_files = config.depth_soft_parameter_files
     elif atten == "hard":
-        save_directly = config.save_directory_Cdep_hard
+        save_directory = config.save_directory_Cdep_hard
         param_files = config.depth_hard_parameter_files
 
     if useData == "rem_original" or useData=="rem_coco":
@@ -40,10 +40,10 @@ def Cdepth_evaluation(atten, useData = "coco"):
         id_to_word_pass = config.ori_id_to_word_file
         if atten == "soft":
             param_files = config.depth_soft_ori_parameter_files
-            save_directly=config.save_directory_Cdep_soft_ori
+            save_directory=config.save_directory_Cdep_soft_ori
         elif atten == "hard":
             param_files = config.depth_hard_ori_parameter_files
-            save_directly=config.save_directory_Cdep_hard_ori
+            save_directory=config.save_directory_Cdep_hard_ori
 
         if useData=="rem_original":
             anno_file_pass = config.rem_ori_val_anno_file
@@ -136,11 +136,11 @@ def Cdepth_evaluation(atten, useData = "coco"):
     for key, enc_dec_depenc  in param_files.items():
         # モデルの学習済み重みパラメータをロード
         encoder.load_state_dict(
-            torch.load(f'{save_directly}/{enc_dec_depenc[0]}'))
+            torch.load(f'{save_directory}/{enc_dec_depenc[0]}'))
         decoder.load_state_dict(
-            torch.load(f'{save_directly}/{enc_dec_depenc[1]}'))
+            torch.load(f'{save_directory}/{enc_dec_depenc[1]}'))
         depth_encoder.load_state_dict(
-            torch.load(f'{save_directly}/{enc_dec_depenc[2]}'))
+            torch.load(f'{save_directory}/{enc_dec_depenc[2]}'))
 
         #coco4kでキャプションを評価
         ref_caps = []
@@ -184,8 +184,7 @@ def Cdepth_evaluation(atten, useData = "coco"):
         for mt, sc in score_result.items():
             scores[mt].append(sc)
 
-    #dire = f"/home/shirota/Depth_image_caption_git/depth_hard_test/{useData}_scores.pkl"
-    dire = dire = save_directly+f"/{useData}_scores.pkl"
+    dire = dire = save_directory+f"/{useData}_scores.pkl"
     with open(dire, "wb") as f:
         pickle.dump(scores, f)
        
@@ -194,26 +193,26 @@ def Cdepth_evaluation(atten, useData = "coco"):
 
     return
 
-def Cdepth_sample(atten, sample_pic, useData="coco"):
+def Cdepth_sample(atten, sample_pic, useData):
     config = ConfigEval()
 
     word_to_id_pass = config.word_to_id_file #MSCOCOで学習する時に使用
     id_to_word_pass = config.id_to_word_file #MSCOCOで学習する時に使用
     if atten == "soft":
-        save_directly = config.save_directory_Cdep_soft
+        save_directory = config.save_directory_Cdep_soft
         param_files = config.depth_soft_parameter_files
     elif atten == "hard":
-        save_directly = config.save_directory_Cdep_hard
+        save_directory = config.save_directory_Cdep_hard
         param_files = config.depth_hard_parameter_files
 
     if useData == "original":
         word_to_id_pass = config.ori_word_to_id_file
         id_to_word_pass = config.ori_id_to_word_file
         if atten == "soft":
-            save_directly = config.save_directory_Cdep_soft_ori
+            save_directory = config.save_directory_Cdep_soft_ori
             param_files = config.depth_soft_ori_parameter_files
         elif atten == "hard":
-            save_directly = config.save_directory_Cdep_hard_ori
+            save_directory = config.save_directory_Cdep_hard_ori
             param_files = config.depth_hard_ori_parameter_files
 
     # 辞書（単語→単語ID）の読み込み
@@ -275,11 +274,11 @@ def Cdepth_sample(atten, sample_pic, useData="coco"):
     dpt.eval()
 
     encoder.load_state_dict(
-            torch.load(f'{save_directly}/{param_files[1][0]}'))
+            torch.load(f'{save_directory}/{param_files[1][0]}'))
     decoder.load_state_dict(
-            torch.load(f'{save_directly}/{param_files[1][1]}'))
+            torch.load(f'{save_directory}/{param_files[1][1]}'))
     depth_encoder.load_state_dict(
-            torch.load(f'{save_directly}/{param_files[1][2]}'))
+            torch.load(f'{save_directory}/{param_files[1][2]}'))
 
 
     #scores = {"Bleu_1":[], "Bleu_2":[], "Bleu_3":[],"Bleu_4":[], "METEOR":[], "ROUGE_L":[],"CIDEr":[]}
@@ -309,8 +308,8 @@ def Cdepth_sample(atten, sample_pic, useData="coco"):
         print("Input correct name")
         return
     
-    output_save_directly = img_directry+f"/depth_{atten}"
-    os.makedirs(output_save_directly, exist_ok=True)
+    output_save_directory = img_directry+f"/depth_{atten}"
+    os.makedirs(output_save_directory, exist_ok=True)
 
     for img_file in sorted(
         glob.glob(os.path.join(img_directry, '*.[jp][pn]g'))):
@@ -341,7 +340,7 @@ def Cdepth_sample(atten, sample_pic, useData="coco"):
         plt.imshow(img_plt)
         plt.axis('off')
         #plt.show()
-        plt.savefig(output_save_directly + f'/input.png', bbox_inches='tight')
+        plt.savefig(output_save_directory + f'/input.png', bbox_inches='tight')
         plt.clf()
 
         print(f'入力画像: {os.path.basename(img_file)}')
@@ -366,7 +365,7 @@ def Cdepth_sample(atten, sample_pic, useData="coco"):
             plt.set_cmap(cm.Greys_r)
             plt.axis('off')
             #plt.show()
-            plt.savefig(output_save_directly + f'/depth_{atten}_{word}_p{c}.png', bbox_inches='tight')
+            plt.savefig(output_save_directory + f'/depth_{atten}_{word}_p{c}.png', bbox_inches='tight')
             plt.clf()
             c += 1
             
@@ -377,7 +376,7 @@ def Cdepth_sample(atten, sample_pic, useData="coco"):
         print(f'出力キャプション: {sentence}')
 
         # 推定結果を書き込み
-        gen_sentence_out = output_save_directly + '/caption.txt'
+        gen_sentence_out = output_save_directory + '/caption.txt'
         with open(gen_sentence_out, 'w') as f:
             print(sentence, file=f)
 
@@ -391,17 +390,27 @@ def Cdepth_sample(atten, sample_pic, useData="coco"):
 
 def main():
     args = sys.argv
-    if len(args)==4:
+    evaluation_datas = ["coco", "rem_coco", "rem_original"]
+    sample_datas = ["coco", "original"]
+    if len(args)==4 and args[2]=="score":
         atten = args[1]
         useData = args[3]
-        Cdepth_evaluation(atten, useData)
+        if useData in evaluation_datas:
+            Cdepth_evaluation(atten, useData)
+        else:
+            print("input coco or rem_coco or rem_original")
+            return
     
-    elif len(args)==5:
+    elif len(args)==5 and args[2]=="sample":
         atten = args[1]
         sample_pic = args[3]
         useData = args[4]
-        Cdepth_sample(atten, sample_pic, useData)
-    
+        if useData in sample_datas:
+            Cdepth_sample(atten, sample_pic, useData)
+        else:
+            print("input coco or original")
+            return
+
     else:
         print("depth_evaluation.py {soft/hard} {score/sample sample_pic} {useData}")
 

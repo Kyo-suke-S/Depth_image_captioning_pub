@@ -45,13 +45,13 @@ class ConfigTrain(object):
         self.save_directory_soft = self.cwd+'/exp_result/base_soft'
         self.save_directory_soft_ori = self.cwd+'/exp_result/base_soft_ori'
 
-        self.save_directory_Cdep_s = self.cwd+'/exp_result/CNN_depth_soft'
-        self.save_directory_Cdep_s_ori = self.cwd+'/exp_result/CNN_depth_soft_ori'
+        self.save_directory_Cdep_soft = self.cwd+'/exp_result/CNN_depth_soft'
+        self.save_directory_Cdep_soft_ori = self.cwd+'/exp_result/CNN_depth_soft_ori'
         #self.save_directory_Mdep_s = self.cwd+'/exp_result/MLP_depth_soft'
         self.save_directory_hard = self.cwd+'/exp_result/base_hard'
         self.save_directory_hard_ori = self.cwd+'/exp_result/base_hard_ori'
-        self.save_directory_Cdep_h = self.cwd+'/exp_result/CNN_depth_hard'
-        self.save_directory_Cdep_h_ori = self.cwd+'/exp_result/CNN_depth_hard_ori'
+        self.save_directory_Cdep_hard = self.cwd+'/exp_result/CNN_depth_hard'
+        self.save_directory_Cdep_hard_ori = self.cwd+'/exp_result/CNN_depth_hard_ori'
         #self.save_directory_Mdep_h = self.cwd+'/exp_result/MLP_depth_hard'
 
         self.save_directory_nic = self.cwd+'/exp_result/NIC'
@@ -118,58 +118,58 @@ class ConfigEval(object):
         self.ori_id_to_word_file = self.cwd+'/dataset/original_dataset/ori_id_to_word.pkl'
 
         self.save_directory_soft = self.cwd+'/exp_result/base_soft'
-        self.base_soft_parameter_files = {1:["base_soft_encoder_best0.pth","base_soft_decoder_best0.pth"],
-                                          2:["base_soft_encoder_best1.pth","base_soft_decoder_best1.pth"],
-                                          3:["base_soft_encoder_best2.pth","base_soft_decoder_best2.pth"]}
+        self.base_soft_parameter_files = {1:["base_soft_encoder_best_coco0.pth","base_soft_decoder_best_coco0.pth"],
+                                          2:["base_soft_encoder_best_coco1.pth","base_soft_decoder_best_coco1.pth"],
+                                          3:["base_soft_encoder_best_coco2.pth","base_soft_decoder_best_coco2.pth"]}
         
         self.save_directory_soft_ori = self.cwd+'/exp_result/base_soft_ori'
-        self.base_soft_ori_parameter_files = {1:["base_soft_encoder_best_ori0.pth","base_soft_decoder_best_ori0.pth"],
-                                              2:["base_soft_encoder_best_ori1.pth","base_soft_decoder_best_ori1.pth"],
-                                              3:["base_soft_encoder_best_ori2.pth","base_soft_decoder_best_ori2.pth"]}
+        self.base_soft_ori_parameter_files = {1:["base_soft_encoder_best_original0.pth","base_soft_decoder_best_original0.pth"],
+                                              2:["base_soft_encoder_best_original1.pth","base_soft_decoder_best_original1.pth"],
+                                              3:["base_soft_encoder_best_original2.pth","base_soft_decoder_best_original2.pth"]}
 
         self.save_directory_Cdep_soft = self.cwd+'/exp_result/CNN_depth_soft'
-        self.depth_soft_parameter_files = {1:["depth_soft_encoder_best0.pth","depth_soft_decoder_best0.pth",
-                                                 "depth_soft_D_encoder_best0.pth"],
-                                              2:["depth_soft_encoder_best1.pth","depth_soft_decoder_best1.pth",
-                                                 "depth_soft_D_encoder_best1.pth"],
-                                              3:["depth_soft_encoder_best2.pth","depth_soft_decoder_best2.pth",
-                                                 "depth_soft_D_encoder_best2.pth"]}
+        self.depth_soft_parameter_files = {1:["depth_soft_encoder_best_coco0.pth","depth_soft_decoder_best_coco0.pth",
+                                                 "depth_soft_D_encoder_best_coco0.pth"],
+                                              2:["depth_soft_encoder_best_coco1.pth","depth_soft_decoder_best_coco1.pth",
+                                                 "depth_soft_D_encoder_best_coco1.pth"],
+                                              3:["depth_soft_encoder_best_coco2.pth","depth_soft_decoder_best_coco2.pth",
+                                                 "depth_soft_D_encoder_best_coco2.pth"]}
 
         self.save_directory_Cdep_soft_ori = self.cwd+'/exp_result/CNN_depth_soft_ori'
-        self.depth_soft_ori_parameter_files = {1:["depth_soft_encoder_best_ori0.pth","depth_soft_decoder_best_ori0.pth",
-                                                 "depth_soft_D_encoder_best_ori0.pth"],
-                                              2:["depth_soft_encoder_best_ori1.pth","depth_soft_decoder_best_ori1.pth",
-                                                 "depth_soft_D_encoder_best_ori1.pth"],
-                                              3:["depth_soft_encoder_best_ori2.pth","depth_soft_decoder_best_ori2.pth",
-                                                 "depth_soft_D_encoder_best_ori2.pth"]}
+        self.depth_soft_ori_parameter_files = {1:["depth_soft_encoder_best_original0.pth","depth_soft_decoder_best_original0.pth",
+                                                 "depth_soft_D_encoder_best_original0.pth"],
+                                              2:["depth_soft_encoder_best_original1.pth","depth_soft_decoder_best_original1.pth",
+                                                 "depth_soft_D_encoder_best_original1.pth"],
+                                              3:["depth_soft_encoder_best_original2.pth","depth_soft_decoder_best_original2.pth",
+                                                 "depth_soft_D_encoder_best_original2.pth"]}
 
         #self.save_directory_Mdep_soft = self.cwd+'/exp_result/MLP_depth_soft'
         
         self.save_directory_hard = self.cwd+'/exp_result/base_hard'
-        self.base_hard_parameter_files = {1:["base_hard_encoder_best0.pth","base_hard_decoder_best0.pth"],
-                                          2:["base_hard_encoder_best1.pth","base_hard_decoder_best1.pth"],
-                                          3:["base_hard_encoder_best2.pth","base_hard_decoder_best2.pth"]}
+        self.base_hard_parameter_files = {1:["base_hard_encoder_best_coco0.pth","base_hard_decoder_best_coco0.pth"],
+                                          2:["base_hard_encoder_best_coco1.pth","base_hard_decoder_best_coco1.pth"],
+                                          3:["base_hard_encoder_best_coco2.pth","base_hard_decoder_best_coco2.pth"]}
 
         self.save_directory_hard_ori = self.cwd+'/exp_result/base_hard_ori'
-        self.base_hard_ori_parameter_files = {1:["base_hard_encoder_best_ori0.pth","base_hard_decoder_best_ori0.pth"],
-                                              2:["base_hard_encoder_best_ori1.pth","base_hard_decoder_best_ori1.pth"],
-                                              3:["base_hard_encoder_best_ori2.pth","base_hard_decoder_best_ori2.pth"]}
+        self.base_hard_ori_parameter_files = {1:["base_hard_encoder_best_original0.pth","base_hard_decoder_best_original0.pth"],
+                                              2:["base_hard_encoder_best_original1.pth","base_hard_decoder_best_original1.pth"],
+                                              3:["base_hard_encoder_best_original2.pth","base_hard_decoder_best_original2.pth"]}
 
         self.save_directory_Cdep_hard = self.cwd+'/exp_result/CNN_depth_hard'
-        self.depth_hard_parameter_files = {1:["depth_hard_encoder_best0.pth","depth_hard_decoder_best0.pth",
-                                                 "depth_hard_D_encoder_best0.pth"],
-                                              2:["depth_hard_encoder_best1.pth","depth_hard_decoder_best1.pth",
-                                                 "depth_hard_D_encoder_best1.pth"],
-                                              3:["depth_hard_encoder_best2.pth","depth_hard_decoder_best2.pth",
-                                                 "depth_hard_D_encoder_best2.pth"]}
+        self.depth_hard_parameter_files = {1:["depth_hard_encoder_best_coco0.pth","depth_hard_decoder_best_coco0.pth",
+                                                 "depth_hard_D_encoder_best_coco0.pth"],
+                                              2:["depth_hard_encoder_best_coco1.pth","depth_hard_decoder_best_coco1.pth",
+                                                 "depth_hard_D_encoder_best_coco1.pth"],
+                                              3:["depth_hard_encoder_best_coco2.pth","depth_hard_decoder_best_coco2.pth",
+                                                 "depth_hard_D_encoder_best_coco2.pth"]}
 
         self.save_directory_Cdep_hard_ori = self.cwd+'/exp_result/CNN_depth_hard_ori'
-        self.depth_hard_ori_parameter_files = {1:["depth_hard_encoder_best_ori0.pth","depth_hard_decoder_best_ori0.pth",
-                                                 "depth_hard_D_encoder_best_ori0.pth"],
-                                              2:["depth_hard_encoder_best_ori1.pth","depth_hard_decoder_best_ori1.pth",
-                                                 "depth_hard_D_encoder_best_ori1.pth"],
-                                              3:["depth_hard_encoder_best_ori2.pth","depth_hard_decoder_best_ori2.pth",
-                                                 "depth_hard_D_encoder_best_ori2.pth"]}
+        self.depth_hard_ori_parameter_files = {1:["depth_hard_encoder_best_original0.pth","depth_hard_decoder_best_original0.pth",
+                                                 "depth_hard_D_encoder_best_original0.pth"],
+                                              2:["depth_hard_encoder_best_original1.pth","depth_hard_decoder_best_original1.pth",
+                                                 "depth_hard_D_encoder_best_original1.pth"],
+                                              3:["depth_hard_encoder_best_original2.pth","depth_hard_decoder_best_original2.pth",
+                                                 "depth_hard_D_encoder_best_original2.pth"]}
 
         #self.save_directory_Mdep_hard = self.cwd+'/exp_result/MLP_depth_hard'
 

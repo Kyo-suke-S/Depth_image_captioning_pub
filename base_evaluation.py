@@ -20,16 +20,16 @@ import Captioning_models.util as util
 
 from Captioning_models.Base_caption_model.nic import evaluation_nic
 
-def Base_evaluation(atten, useData = "coco"):
+def Base_evaluation(atten, useData):
     config = ConfigEval()
     word_to_id_pass = config.word_to_id_file #MSCOCOで学習する時に使用
     id_to_word_pass = config.id_to_word_file #MSCOCOで学習する時に使用
     anno_file_pass = config.val_anno_file #MSCOCOのアノテーションファイル
     if atten == "soft":
-        save_directly = config.save_directory_soft
+        save_directory = config.save_directory_soft
         param_files = config.base_soft_parameter_files
     elif atten == "hard":
-        save_directly = config.save_directory_hard
+        save_directory = config.save_directory_hard
         param_files = config.base_hard_parameter_files
 
     if useData == "rem_original" or useData=="rem_coco":
@@ -37,10 +37,10 @@ def Base_evaluation(atten, useData = "coco"):
         id_to_word_pass = config.ori_id_to_word_file
         if atten == "soft":
             param_files = config.base_soft_ori_parameter_files
-            save_directly=config.save_directory_soft_ori
+            save_directory=config.save_directory_soft_ori
         elif atten == "hard":
             param_files = config.base_hard_ori_parameter_files
-            save_directly=config.save_directory_hard_ori
+            save_directory=config.save_directory_hard_ori
         
         if useData=="rem_original":
             anno_file_pass = config.rem_ori_val_anno_file
@@ -124,9 +124,9 @@ def Base_evaluation(atten, useData = "coco"):
     for key, enc_dec  in param_files.items():
         # モデルの学習済み重みパラメータをロード
         encoder.load_state_dict(
-            torch.load(f'{save_directly}/{enc_dec[0]}'))
+            torch.load(f'{save_directory}/{enc_dec[0]}'))
         decoder.load_state_dict(
-            torch.load(f'{save_directly}/{enc_dec[1]}'))
+            torch.load(f'{save_directory}/{enc_dec[1]}'))
 
         #coco4kでキャプションを評価
         ref_caps = []
@@ -161,25 +161,24 @@ def Base_evaluation(atten, useData = "coco"):
         for mt, sc in score_result.items():
             scores[mt].append(sc)
 
-    dire = f"/home/shirota/Depth_image_caption_git/test_base_{atten}/{useData}_scores.pkl"
-    #dire = save_directly+f"/{useData}_scores.pkl"
+    dire = save_directory+f"/{useData}_scores.pkl"
     with open(dire, "wb") as f:
         pickle.dump(scores, f)
     
     return
 
 
-def Base_sample(atten, sample_pic, useData="coco"):#キャプションとアテンションを可視化
+def Base_sample(atten, sample_pic, useData):#キャプションとアテンションを可視化
     config = ConfigEval()
 
     word_to_id_pass = config.word_to_id_file #MSCOCOで学習する時に使用
     id_to_word_pass = config.id_to_word_file #MSCOCOで学習する時に使用
     #anno_file_pass = config.val_anno_file #MSCOCOのアノテーションファイル
     if atten == "soft":
-        save_directly = config.save_directory_soft
+        save_directory = config.save_directory_soft
         param_files = config.base_soft_parameter_files
     elif atten == "hard":
-        save_directly = config.save_directory_hard
+        save_directory = config.save_directory_hard
         param_files = config.base_hard_parameter_files
 
     if useData == "original":
@@ -187,10 +186,10 @@ def Base_sample(atten, sample_pic, useData="coco"):#キャプションとアテ�
         id_to_word_pass = config.ori_id_to_word_file
         if atten == "soft":
             param_files = config.base_soft_ori_parameter_files
-            save_directly=config.save_directory_soft_ori
+            save_directory=config.save_directory_soft_ori
         elif atten == "hard":
             param_files = config.base_hard_ori_parameter_files
-            save_directly=config.save_directory_hard_ori
+            save_directory=config.save_directory_hard_ori
         #if useData=="rem_original":
         #    anno_file_pass = config.rem_ori_val_anno_file
         #else:
@@ -237,9 +236,9 @@ def Base_sample(atten, sample_pic, useData="coco"):#キャプションとアテ�
 
     # モデルの学習済み重みパラメータをロード
     encoder.load_state_dict(
-        torch.load(f'{save_directly}/{param_files[1][0]}'))
+        torch.load(f'{save_directory}/{param_files[1][0]}'))
     decoder.load_state_dict(
-        torch.load(f'{save_directly}/{param_files[1][1]}'))
+        torch.load(f'{save_directory}/{param_files[1][1]}'))
     
     if sample_pic == "sample1":
          img_directry = config.sample1_dir
@@ -267,8 +266,8 @@ def Base_sample(atten, sample_pic, useData="coco"):#キャプションとアテ�
         print("Input correct name")
         return
 
-    output_save_directly = img_directry+f"/base_{atten}"
-    os.makedirs(output_save_directly, exist_ok=True)
+    output_save_directory = img_directry+f"/base_{atten}"
+    os.makedirs(output_save_directory, exist_ok=True)
     # ディレクトリ内の画像を対象としてキャプショニング実行
     for img_file in sorted(
         glob.glob(os.path.join(img_directry, '*.[jp][pn]g'))):
@@ -290,7 +289,7 @@ def Base_sample(atten, sample_pic, useData="coco"):#キャプションとアテ�
         plt.imshow(img_plt)
         plt.axis('off')
         #plt.show()
-        plt.savefig(output_save_directly+'/input.png', bbox_inches='tight')
+        plt.savefig(output_save_directory+'/input.png', bbox_inches='tight')
         plt.clf()
         plt.close()
 
@@ -318,7 +317,7 @@ def Base_sample(atten, sample_pic, useData="coco"):#キャプションとアテ�
             plt.set_cmap(cm.Greys_r)
             plt.axis('off')
             #plt.show()
-            plt.savefig(output_save_directly+f'/base_{atten}_{word}_p{c}.png', bbox_inches='tight')
+            plt.savefig(output_save_directory+f'/base_{atten}_{word}_p{c}.png', bbox_inches='tight')
             plt.clf()
             plt.close()
             c += 1
@@ -330,7 +329,7 @@ def Base_sample(atten, sample_pic, useData="coco"):#キャプションとアテ�
         print(f'出力キャプション: {sentence}')
 
         # 推定結果を書き込み
-        gen_sentence_out = output_save_directly+'/caption.txt'
+        gen_sentence_out = output_save_directory+'/caption.txt'
         with open(gen_sentence_out, 'w') as f:
             print(sentence, file=f)
     
@@ -340,22 +339,33 @@ def Base_sample(atten, sample_pic, useData="coco"):#キャプションとアテ�
 
 def main():
     args = sys.argv
-    if len(args)==4:
+    evaluation_datas = ["coco", "rem_coco", "rem_original"]
+    sample_datas = ["coco", "original"]
+    if len(args)==4 and args[2]=="score":
         atten = args[1]
         useData = args[3]
-        Base_evaluation(atten, useData)
+        if useData in evaluation_datas:
+            Base_evaluation(atten, useData)
+        else:
+            print("input coco or rem_coco or rem_original")
+            return
     
-    elif len(args)==5:
+    elif len(args)==5 and args[2] == "sample":
         atten = args[1]
         sample_pic = args[3]
         useData = args[4]
-        Base_sample(atten, sample_pic, useData)
+        if useData in sample_datas:
+            Base_sample(atten, sample_pic, useData)
+        else:
+            print("input coco or original")
+            return
 
     elif args[1] == "nic":
         evaluation_nic()
 
     else:
         print("base_evaluation.py {soft/hard} {score/sample sample_pic} {useData}")
+        return
     
 
 
