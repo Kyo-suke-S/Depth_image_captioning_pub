@@ -20,11 +20,11 @@
 </figure>
 
 <div style="display: flex; gap: 20px;">
-  <figure>
+  <figure style="display: flex; flex-direction: column; align-items: center;">
     <img src="./README_images/coco_pickup_rgb.png" width="290" />
     <figcaption>MSCOCO2014の画像例</figcaption>
   </figure>
-  <figure>
+  <figure style="display: flex; flex-direction: column; align-items: center;">
     <img src="./README_images/coco_pickup_depth.png" width="290" />
     <figcaption>左画像の奥行きマップ</figcaption>
   </figure>
