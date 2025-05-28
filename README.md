@@ -19,16 +19,10 @@
   <figcaption>図1: モデル図</figcaption>
 </figure>
 
-<div style="display: flex; gap: 20px;">
-  <figure style="display: flex; flex-direction: column; align-items: center;">
-    <img src="./README_images/coco_pickup_rgb.png" width="290" />
-    <figcaption>MSCOCO2014の画像例</figcaption>
-  </figure>
-  <figure style="display: flex; flex-direction: column; align-items: center;">
-    <img src="./README_images/coco_pickup_depth.png" width="290" />
-    <figcaption>左画像の奥行きマップ</figcaption>
-  </figure>
-</div>
+| <img src="./README_images/coco_pickup_rgb.png" width="250"/> | <img src="./README_images/coco_pickup_depth.png" width="250"/> |
+|:----------------------------------:|:----------------------------------:|
+| MSCOCO2014の画像例                        | 左画像の奥行きマップ                        |
+
 
 ## 実験結果
 MSCOCO2014での実験結果(150 epoch)<br>[base-soft, base-hard]は既存モデル(Show, Attend and Tell)、[depth-soft, depth-hard]は提案モデル。ソフトアテンションの提案モデルdepth-softのスコアがMETEORを除いてbase-softより高くなったことがわかる。
